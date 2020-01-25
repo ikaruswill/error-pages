@@ -1,0 +1,35 @@
+kind: pipeline
+name: default
+type: kubernetes
+
+platform:
+  os: linux
+  arch: arm
+
+steps:
+- name: publish
+  image: plugins/docker
+  settings:
+    repo: ikaruswill/error-pages
+    auto_tag: true
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+trigger:
+  event:
+  - push
+
+---
+kind: secret
+name: docker_username
+get:
+  path: drone-secrets
+  name: docker_username
+---
+kind: secret
+name: docker_password
+get:
+  path: drone-secrets
+  name: docker_password
